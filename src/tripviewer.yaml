@@ -107,11 +107,16 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+<<<<<<< HEAD
   name: poi
+=======
+  name: user-java
+>>>>>>> 55aabe4fc592eab9b24989ad113992e23aa565f7
 spec:
   replicas: 1
   selector:
     matchLabels:
+<<<<<<< HEAD
       app: poi
   template:
     metadata:
@@ -124,6 +129,20 @@ spec:
       containers:
       - name: poi
         image: registryexf6076.azurecr.io/poi:1.0
+=======
+      app: user-java
+  template:
+    metadata:
+      labels:
+        app: user-java
+    spec:
+      hostname: user-java
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: user-java
+        image: registryexf6076.azurecr.io/users:1.0
+>>>>>>> 55aabe4fc592eab9b24989ad113992e23aa565f7
         env:
         - name: SQL_USER
           value: "sqladmineXf6076" 
@@ -133,10 +152,21 @@ spec:
           value: "sqlserverexf6076.database.windows.net" 
         - name: SQL_DBNAME
           value: "mydrivingDB" 
+<<<<<<< HEAD
         - name: WEB_PORT
           value: "80"
         - name: CONFIG_FILES_PATH
           value: "/secrets" 
+=======
+        - name: PORT
+          value: "80"
+        - name: CONFIG_FILES_PATH
+          value: "/secrets" 
+        - name: OPENAPI_DOCS_URI
+          value: "http://changeme"
+        - name: DEBUG_LOGGING
+          value: "true"
+>>>>>>> 55aabe4fc592eab9b24989ad113992e23aa565f7
         resources:
           requests:
             cpu: 100m
@@ -146,14 +176,27 @@ spec:
             memory: 256Mi
         ports:
         - containerPort: 80
+<<<<<<< HEAD
           name: poi
+=======
+          name: user-java
+          
+>>>>>>> 55aabe4fc592eab9b24989ad113992e23aa565f7
 ---
 apiVersion: v1
 kind: Service
 metadata:
+<<<<<<< HEAD
   name: poi
+=======
+  name: user-java
+>>>>>>> 55aabe4fc592eab9b24989ad113992e23aa565f7
 spec:
   ports:
   - port: 80
   selector:
+<<<<<<< HEAD
     app: poi
+=======
+    app: user-java
+>>>>>>> 55aabe4fc592eab9b24989ad113992e23aa565f7
