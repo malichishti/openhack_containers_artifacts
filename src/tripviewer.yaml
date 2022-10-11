@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripviewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tripviewer
+  template:
+    metadata:
+      labels:
+        app: tripviewer
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: tripviewer
+        image: registryexf6076.azurecr.io/tripviewer:1.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+        env:
+        - name: TRIPS_API_ENDPOINT
+          value: "trips"
+        - name: USERPROFILE_API_ENDPOINT
+          value: "UserProfile"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripviewer
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: tripviewer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trips
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trips
+  template:
+    metadata:
+      labels:
+        app: trips
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: trips
+        image: registryexf6076.azurecr.io/trips:1.0
+        env:
+        - name: SQL_USER
+          value: "sqladmineXf6076" 
+        - name: SQL_PASSWORD
+          value: "Password123!" 
+        - name: SQL_SERVER
+          value: "sqlserverexf6076.database.windows.net" 
+        - name: SQL_DBNAME
+          value: "mydrivingDB" 
+        - name: PORT
+          value: "6371"
+        - name: CONFIG_FILES_PATH
+          value: "/secrets" 
+        - name: OPENAPI_DOCS_URI
+          value: "http://changeme"
+        - name: DEBUG_LOGGING
+          value: "false"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 6371
+          name: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trips
+spec:
+  ports:
+  - port: 6371
+  selector:
+    app: trips
