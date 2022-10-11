@@ -28,9 +28,11 @@ spec:
         - containerPort: 80
         env:
         - name: TRIPS_API_ENDPOINT
-          value: "trips"
+          value: "http://trips.default.svc.cluster.local"
         - name: USERPROFILE_API_ENDPOINT
           value: "UserProfile"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
 ---
 apiVersion: v1
 kind: Service
@@ -57,6 +59,7 @@ spec:
       labels:
         app: trips
     spec:
+      hostname: trips
       nodeSelector:
         "kubernetes.io/os": linux
       containers:
@@ -72,13 +75,13 @@ spec:
         - name: SQL_DBNAME
           value: "mydrivingDB" 
         - name: PORT
-          value: "6371"
+          value: "80"
         - name: CONFIG_FILES_PATH
           value: "/secrets" 
         - name: OPENAPI_DOCS_URI
           value: "http://changeme"
         - name: DEBUG_LOGGING
-          value: "false"
+          value: "true"
         resources:
           requests:
             cpu: 100m
@@ -87,8 +90,8 @@ spec:
             cpu: 250m
             memory: 256Mi
         ports:
-        - containerPort: 6371
-          name: redis
+        - containerPort: 80
+          name: trips
 ---
 apiVersion: v1
 kind: Service
@@ -96,6 +99,6 @@ metadata:
   name: trips
 spec:
   ports:
-  - port: 6371
+  - port: 80
   selector:
     app: trips
