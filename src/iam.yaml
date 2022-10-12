@@ -1,0 +1,93 @@
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: admin-frontend
+  namespace: tripviewer-front
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cluster-admin
+subjects:
+- kind: Group
+  name: d7bda6d6-ddae-4915-9df8-8d3dfa89a7c2
+  
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: admin-backend
+  namespace: tripviewer-back
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cluster-admin
+subjects:
+- kind: Group
+  name: d7bda6d6-ddae-4915-9df8-8d3dfa89a7c2
+  
+
+   
+
+  
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: frontend-webrole
+  namespace: tripviewer-front
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: edit
+subjects:
+- kind: Group
+  namespace: tripviewer-front
+  name: 329f6f75-379f-4b87-93f2-b3c7bc8aefd8
+  
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: frontend-apirole
+  namespace: tripviewer-back
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: view
+subjects:
+- kind: Group
+  namespace: tripviewer-back
+  name: 329f6f75-379f-4b87-93f2-b3c7bc8aefd8
+  
+  
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: backend-apirole
+  namespace: tripviewer-back
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: edit
+subjects:
+- kind: Group
+  namespace: tripviewer-back
+  name: 446a1855-2dd7-4870-a4aa-e866e789c6a6
+
+  
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: backend-webrole
+  namespace: tripviewer-front
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: view
+subjects:
+- kind: Group
+  namespace: tripviewer-front
+  name: 446a1855-2dd7-4870-a4aa-e866e789c6a6
+
+  
