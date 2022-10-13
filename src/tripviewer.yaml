@@ -78,9 +78,10 @@ spec:
       containers:
       - name: trips
         image: registryexf6076.azurecr.io/trips:1.0
-        envFrom:
-        - secretRef:
-           name: secrets
+       # envFrom:
+      # out as no longer using the secret YAML file
+      #  - secretRef:
+      #     name: secrets
         env:
         - name: SQL_SERVER
           value: "sqlserverexf6076.database.windows.net" 
