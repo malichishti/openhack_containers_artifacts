@@ -104,6 +104,17 @@ spec:
         ports:
         - containerPort: 80
           name: trips
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+      - name: secrets-store01-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+           secretProviderClass: "tripviewer-secrets"
 ---
 apiVersion: v1
 kind: Service
