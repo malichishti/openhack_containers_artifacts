@@ -326,6 +326,8 @@ spec:
     app: poi
 
 ---
+# no problem with YAML, the INsurance app has a memory leak by desigm
+# to test monitoring harness
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -334,7 +336,7 @@ metadata:
   labels:
     deploy: insurance
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: insurance
