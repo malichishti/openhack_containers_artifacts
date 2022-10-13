@@ -107,7 +107,7 @@ spec:
           name: trips
         volumeMounts:
         - name: secrets-store01-inline
-          mountPath: "/mnt/secrets-store"
+          mountPath: "/secrets"
           readOnly: true
       volumes:
       - name: secrets-store01-inline
@@ -150,9 +150,9 @@ spec:
       containers:
       - name: user-java
         image: registryexf6076.azurecr.io/users:1.0
-        envFrom:
-        - secretRef:
-           name: secrets
+        #envFrom:
+        #- secretRef:
+        #   name: secrets
         env:
         - name: SQL_SERVER
           value: "sqlserverexf6076.database.windows.net" 
@@ -170,7 +170,17 @@ spec:
         ports:
         - containerPort: 80
           name: user-java
-
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+      - name: secrets-store01-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+           secretProviderClass: "tripviewer-secrets-yaml"
 ---
 apiVersion: v1
 kind: Service
@@ -204,9 +214,9 @@ spec:
       containers:
       - name: userprofile
         image: registryexf6076.azurecr.io/userprofile:1.0
-        envFrom:
-        - secretRef:
-           name: secrets
+        #envFrom:
+        #- secretRef:
+        #   name: secrets
         env:
         - name: SQL_SERVER
           value: "sqlserverexf6076.database.windows.net" 
@@ -225,7 +235,18 @@ spec:
             memory: 256Mi
         ports:
         - containerPort: 80
-          name: redis
+          name: userprofileport
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+      - name: secrets-store01-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+           secretProviderClass: "tripviewer-secrets-yaml"
 ---
 apiVersion: v1
 kind: Service
@@ -259,9 +280,9 @@ spec:
       containers:
       - name: poi
         image: registryexf6076.azurecr.io/poi:1.0
-        envFrom:
-        - secretRef:
-           name: secrets
+        #envFrom:
+        #- secretRef:
+        #   name: secrets
         env: 
         - name: SQL_SERVER
           value: "sqlserverexf6076.database.windows.net" 
@@ -281,6 +302,17 @@ spec:
         ports:
         - containerPort: 80
           name: poi
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+      - name: secrets-store01-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+           secretProviderClass: "tripviewer-secrets-yaml"
 ---
 apiVersion: v1
 kind: Service
